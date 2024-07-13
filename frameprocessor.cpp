@@ -3,7 +3,8 @@
 void FrameProcessor::run()
 {
     while (true) {
-        // qDebug()<<m_queue.size();
+
+        qDebug()<<"m_queue.size:"<<m_queue.size();
         m_semaphore.acquire(); // 等待信号量变为非零，表示队列中有元素
 
         // QThread::msleep(100); // 延时1000毫秒
@@ -13,6 +14,9 @@ void FrameProcessor::run()
         if (m_queue.isEmpty()) {
             continue; // 如果队列在等待过程中变空，则跳过本次循环
         }
+
+        QElapsedTimer timer;
+        timer.start();
 
         // 从队列中深拷贝一帧
         QImage image = m_queue.dequeue();
@@ -54,7 +58,7 @@ void FrameProcessor::run()
 
 
         // 使用QSharedPointer来管理QImage的生命周期
-        QSharedPointer<QImage> sharedImage(new QImage(showImage));
+        QSharedPointer<QImage> sharedImage(new QImage(image));
 
         // 将处理后的图像发送到主线程
         QMetaObject::invokeMethod(m_receiver,
@@ -70,5 +74,7 @@ void FrameProcessor::run()
         //                           Qt::QueuedConnection,
         //                           Q_ARG(QImage, showImage));
 
+        double timeTaken = timer.elapsed();
+        // qDebug() << "Function took" << timeTaken << "ms";
     }
 }
