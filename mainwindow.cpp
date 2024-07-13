@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //opencv
-    cv::namedWindow("camera", cv::WINDOW_NORMAL);
+    // cv::namedWindow("camera", cv::WINDOW_NORMAL);
 
 
 
@@ -137,14 +137,7 @@ void MainWindow::UpdateAudioOutputDevices() {
 void MainWindow::UpdateVideoInputDevices() {
 
     qDebug() << "UpdateVideoInputDevices:" << camera->cameraDevice().description();
-
-
-
-
-
     camera->setCameraDevice(QMediaDevices::defaultVideoInput());
-
-
 
 
     qDebug() <<"camera isAvailable:" <<camera->isAvailable();
@@ -190,15 +183,14 @@ void MainWindow::VideoSinkFrameChanged(const QVideoFrame &frame)
 void MainWindow::ProcessingFinished(QSharedPointer<QImage> sharedImage)
 {
     if (!sharedImage.isNull()) {
-        QImage image = sharedImage->copy();
-        graphicsPixmapItem->setPixmap(QPixmap::fromImage(image));
+        graphicsPixmapItem->setPixmap(QPixmap::fromImage(*sharedImage));
     }
 }
 
 void MainWindow::ProcessingFinished(QImage image)
 {
 
-    QImage deepCopiedImage = image.copy();
-    // QPixmap pix = QPixmap::fromImage(deepCopiedImage);
-    // graphicsPixmapItem->setPixmap(pix);
+    // QImage deepCopiedImage = image.copy();
+    QPixmap pix = QPixmap::fromImage(image);
+    graphicsPixmapItem->setPixmap(pix);
 }
