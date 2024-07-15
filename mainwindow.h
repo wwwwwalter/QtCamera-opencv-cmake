@@ -157,5 +157,9 @@ protected:
     // QWidget interface
 protected:
     virtual void moveEvent(QMoveEvent *event) override;
+
+    // QWidget interface
+protected:
+    virtual void mouseDoubleClickEvent(QMouseEvent *event) override;
 };
 #endif // MAINWINDOW_H

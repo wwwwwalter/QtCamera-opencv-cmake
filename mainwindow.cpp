@@ -1,9 +1,10 @@
 #include "mainwindow.h"
 
 #include <QHBoxLayout>
+#include <QMouseEvent>
+#include <QOpenGLWidget>
 #include <QThreadPool>
 #include "framehandle.h"
-#include <QOpenGLWidget>
 #include "frameprocessor.h"
 #include "opencv2/opencv.hpp"
 
@@ -37,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // 文字图元
-    textItem = new QGraphicsTextItem("你好");
+    textItem = new QGraphicsTextItem("你好\nhello");
     textItem->setFont(QFont("宋体",30));
     textItem->setFlag(QGraphicsItem::ItemIsMovable);
     textItem->setDefaultTextColor(QColor(0,255,0));
@@ -232,8 +233,8 @@ void MainWindow::ProcessingFinished(QSharedPointer<QImage> sharedImage)
         pixmapItem->setPixmap(QPixmap::fromImage(*sharedImage));
     }
 
-    static int count = 1;
-    textItem->setPlainText(QString::number(count++));
+    // static int count = 1;
+    // textItem->setPlainText(QString::number(count++));
 
 }
 
@@ -253,4 +254,9 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 
 void MainWindow::moveEvent(QMoveEvent *event) {
     // qDebug()<<view->frameGeometry();
+}
+
+
+void MainWindow::mouseDoubleClickEvent(QMouseEvent *event) {
+    qDebug()<<event->position().toPoint();
 }
