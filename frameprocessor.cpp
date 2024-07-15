@@ -7,7 +7,7 @@ void FrameProcessor::run()
         qDebug()<<"m_queue.size:"<<m_queue.size();
         m_semaphore.acquire(); // 等待信号量变为非零，表示队列中有元素
 
-        // QThread::msleep(100); // 延时1000毫秒
+        QThread::msleep(30); // 延时毫秒
 
 
 
@@ -58,7 +58,7 @@ void FrameProcessor::run()
 
 
         // 使用QSharedPointer来管理QImage的生命周期
-        QSharedPointer<QImage> sharedImage(new QImage(image));
+        QSharedPointer<QImage> sharedImage(new QImage(showImage));
 
         // 将处理后的图像发送到主线程
         QMetaObject::invokeMethod(m_receiver,

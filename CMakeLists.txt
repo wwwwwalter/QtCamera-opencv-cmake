@@ -29,7 +29,8 @@ add_executable(qt-camera-opencv
         mainwindow.cpp
         mainwindow.h
         settings.h settings.cpp
-        frameprocessor.h frameprocessor.cpp)
+        frameprocessor.h frameprocessor.cpp
+        framehandle.h framehandle.cpp)
 target_link_libraries(qt-camera-opencv PRIVATE
         Qt::Core
         Qt::Gui

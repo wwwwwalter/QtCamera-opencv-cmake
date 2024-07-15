@@ -80,9 +80,9 @@ private:
 
 private:
     // queue
-    QQueue<QImage> *m_imageQueue;
-    QSemaphore *m_semaphore;
-    FrameProcessor *frameProcess;
+    // QQueue<QImage> *m_imageQueue;
+    // QSemaphore *m_semaphore;
+    // FrameProcessor *frameProcess;
 
 
 

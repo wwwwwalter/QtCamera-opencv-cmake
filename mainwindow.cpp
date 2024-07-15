@@ -2,6 +2,7 @@
 
 #include <QHBoxLayout>
 #include <QThreadPool>
+#include "framehandle.h"
 #include "frameprocessor.h"
 #include "opencv2/opencv.hpp"
 
@@ -93,12 +94,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // 创建队列和信号量
-    m_imageQueue = new QQueue<QImage>;
-    m_semaphore = new QSemaphore(0);
+    // m_imageQueue = new QQueue<QImage>;
+    // m_semaphore = new QSemaphore(0);
 
     // 启动工作线程
-    frameProcess = new FrameProcessor(*m_imageQueue, *m_semaphore, this);
-    QThreadPool::globalInstance()->start(frameProcess);
+    // frameProcess = new FrameProcessor(*m_imageQueue, *m_semaphore, this);
+    // QThreadPool::globalInstance()->start(frameProcess);
+    // QThreadPool::globalInstance()->setMaxThreadCount(30);
 
 
 
@@ -171,8 +173,14 @@ void MainWindow::VideoSinkFrameChanged(const QVideoFrame &frame)
 
 
 
-    m_imageQueue->enqueue(image);
-    m_semaphore->release(); // 释放信号量，通知工作线程队列中有新元素
+    // m_imageQueue->enqueue(image);
+    // m_semaphore->release(); // 释放信号量，通知工作线程队列中有新元素
+
+    QSharedPointer<QImage> sharedImage(new QImage(image));
+    QThreadPool::globalInstance()->tryStart(new FrameHandle(sharedImage,this));
+
+    // qDebug()<<QThreadPool::globalInstance()->maxThreadCount();
+    // qDebug()<<QThreadPool::globalInstance()->activeThreadCount();
 
 
     double timeTaken = timer.elapsed();
