@@ -65,9 +65,11 @@ private:
     QAudioOutput *audioOutput;       //音频输出流
     QVideoWidget *videoWidget;       //相机预览
     QVideoSink *videoSink;           //视频接收器
-    QGraphicsView *graphicsView;     //图片显示
-    QGraphicsScene *graphicsScene;
-    QGraphicsPixmapItem *graphicsPixmapItem;
+    QGraphicsView *view;             //视图
+    QGraphicsScene *scene;           //场景
+    QGraphicsPixmapItem *pixmapItem; //pix图元
+    QGraphicsTextItem *textItem;     //text图元
+
     QImageCapture *imageCapture;     //拍照
     QMediaRecorder *mediaRecored;    //录像LL
 

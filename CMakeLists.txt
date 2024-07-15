@@ -10,6 +10,7 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        OpenGLWidgets
         Multimedia
         MultimediaWidgets
         REQUIRED)
@@ -36,6 +37,7 @@ target_link_libraries(qt-camera-opencv PRIVATE
         Qt::Gui
         Qt::Widgets
         Qt6::Multimedia
-        Qt::MultimediaWidgets
+        Qt6::MultimediaWidgets
+        Qt6::OpenGLWidgets
         ${OpenCV_LIBS}
 )

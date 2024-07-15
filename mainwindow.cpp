@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QThreadPool>
 #include "framehandle.h"
+#include <QOpenGLWidget>
 #include "frameprocessor.h"
 #include "opencv2/opencv.hpp"
 
@@ -24,23 +25,47 @@ MainWindow::MainWindow(QWidget *parent)
     //media layout
     videoWidget = new QVideoWidget;
     videoSink = new QVideoSink;
-    graphicsView = new QGraphicsView;
-    graphicsScene = new QGraphicsScene;
-    graphicsPixmapItem = new QGraphicsPixmapItem;
-    graphicsScene->addItem(graphicsPixmapItem);
-    graphicsView->setScene(graphicsScene);
+    view = new QGraphicsView;
+    //view->setRenderHint(QPainter::Antialiasing); //开启抗锯齿
+    //view->setViewport(new QOpenGLWidget()); //开启OpenGL
+    scene = new QGraphicsScene;
+    // scene->setSceneRect(QRectF(-960,-540,1920,1080));
+    // 图片图元
+    pixmapItem = new QGraphicsPixmapItem;
+    // pixmapItem->setPos(0,0);
+    scene->addItem(pixmapItem);
+
+
+    // 文字图元
+    textItem = new QGraphicsTextItem("你好");
+    textItem->setFont(QFont("宋体",30));
+    textItem->setFlag(QGraphicsItem::ItemIsMovable);
+    textItem->setDefaultTextColor(QColor(0,255,0));
+    textItem->setPos(0,0);
+    scene->addItem(textItem);
+
+
+
+    view->setScene(scene);
+
+
+
+
+
+
+
     empty_label = new QLabel(tr("no camera"));
     empty_label->setAlignment(Qt::AlignCenter);
     empty_label->setStyleSheet("QLabel { background-color : black; }");
     stackedWidget = new QStackedWidget;
-    stackedWidget->insertWidget(0, graphicsView);
+    stackedWidget->insertWidget(0, view);
     stackedWidget->insertWidget(1, empty_label);
     hboxlayout_main->addWidget(stackedWidget);
     stackedWidget->setCurrentWidget(stackedWidget);
 
 
-    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     resize(1920, 1080); // 在窗口显示时设置大小
 
@@ -97,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
     // }
 
     // set cameraDevice Format
-    camera->setCameraFormat(formats[1]);
+    camera->setCameraFormat(formats[7]);
 
 
 
@@ -204,8 +229,12 @@ void MainWindow::VideoSinkFrameChanged(const QVideoFrame &frame)
 void MainWindow::ProcessingFinished(QSharedPointer<QImage> sharedImage)
 {
     if (!sharedImage.isNull()) {
-        graphicsPixmapItem->setPixmap(QPixmap::fromImage(*sharedImage));
+        pixmapItem->setPixmap(QPixmap::fromImage(*sharedImage));
     }
+
+    static int count = 1;
+    textItem->setPlainText(QString::number(count++));
+
 }
 
 void MainWindow::ProcessingFinished(QImage image)
@@ -213,15 +242,15 @@ void MainWindow::ProcessingFinished(QImage image)
 
     // QImage deepCopiedImage = image.copy();
     QPixmap pix = QPixmap::fromImage(image);
-    graphicsPixmapItem->setPixmap(pix);
+    pixmapItem->setPixmap(pix);
 }
 
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
-    graphicsView->fitInView(graphicsScene->sceneRect(), Qt::KeepAspectRatio);
+    // view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 
 void MainWindow::moveEvent(QMoveEvent *event) {
-    // qDebug()<<graphicsView->frameGeometry();
+    // qDebug()<<view->frameGeometry();
 }
