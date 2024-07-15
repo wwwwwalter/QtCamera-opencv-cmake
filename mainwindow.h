@@ -147,7 +147,13 @@ public:
         return timer.elapsed();
     }
 
+    // QTC_TEMP
+    // QWidget interface
+protected:
+    virtual void resizeEvent(QResizeEvent *event) override;
 
-
+    // QWidget interface
+protected:
+    virtual void moveEvent(QMoveEvent *event) override;
 };
 #endif // MAINWINDOW_H

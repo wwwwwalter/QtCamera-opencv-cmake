@@ -9,12 +9,16 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    resize(800, 600); // 在窗口显示时设置大小
+
+    // qDebug()<<geometry();
+    // qDebug()<<frameGeometry();
 
     //main widget
     QWidget *w = new QWidget;
     setCentralWidget(w);
     QHBoxLayout *hboxlayout_main = new QHBoxLayout;
+    hboxlayout_main->setSpacing(0);
+    hboxlayout_main->setContentsMargins(0,0,0,0);
     w->setLayout(hboxlayout_main);
 
     //media layout
@@ -32,7 +36,16 @@ MainWindow::MainWindow(QWidget *parent)
     stackedWidget->insertWidget(0, graphicsView);
     stackedWidget->insertWidget(1, empty_label);
     hboxlayout_main->addWidget(stackedWidget);
-    stackedWidget->setCurrentWidget(graphicsView);
+    stackedWidget->setCurrentWidget(stackedWidget);
+
+
+    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    resize(1920, 1080); // 在窗口显示时设置大小
+
+
+
 
 
 
@@ -55,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(camera, &QCamera::cameraDeviceChanged, this, &MainWindow::CameraDeviceChanged);
 
     //output stream
-    session->setVideoOutput(videoWidget);
+    // session->setVideoOutput(videoWidget);
     session->setVideoSink(videoSink);
     audioOutput = new QAudioOutput(QMediaDevices::defaultAudioOutput());
     session->setAudioOutput(audioOutput);
@@ -201,4 +214,14 @@ void MainWindow::ProcessingFinished(QImage image)
     // QImage deepCopiedImage = image.copy();
     QPixmap pix = QPixmap::fromImage(image);
     graphicsPixmapItem->setPixmap(pix);
+}
+
+
+void MainWindow::resizeEvent(QResizeEvent *event) {
+    graphicsView->fitInView(graphicsScene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+
+void MainWindow::moveEvent(QMoveEvent *event) {
+    // qDebug()<<graphicsView->frameGeometry();
 }
