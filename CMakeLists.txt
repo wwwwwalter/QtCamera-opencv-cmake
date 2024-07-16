@@ -31,7 +31,8 @@ add_executable(qt-camera-opencv
         mainwindow.h
         settings.h settings.cpp
         frameprocessor.h frameprocessor.cpp
-        framehandle.h framehandle.cpp)
+        framehandle.h framehandle.cpp
+        pixitem.h pixitem.cpp)
 target_link_libraries(qt-camera-opencv PRIVATE
         Qt::Core
         Qt::Gui

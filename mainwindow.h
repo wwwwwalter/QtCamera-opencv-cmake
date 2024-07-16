@@ -29,6 +29,7 @@
 #include <QVideoWidget>
 #include "frameprocessor.h"
 #include "opencv2/opencv.hpp"
+#include "pixitem.h"
 
 class MainWindow : public QMainWindow
 {
@@ -67,7 +68,7 @@ private:
     QVideoSink *videoSink;           //视频接收器
     QGraphicsView *view;             //视图
     QGraphicsScene *scene;           //场景
-    QGraphicsPixmapItem *pixmapItem; //pix图元
+    PixItem *pixmapItem;             //图元
     QGraphicsTextItem *textItem;     //text图元
 
     QImageCapture *imageCapture;     //拍照
@@ -149,7 +150,7 @@ public:
         return timer.elapsed();
     }
 
-    // QTC_TEMP
+
     // QWidget interface
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;

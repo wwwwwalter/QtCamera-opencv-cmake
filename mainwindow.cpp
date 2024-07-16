@@ -28,12 +28,14 @@ MainWindow::MainWindow(QWidget *parent)
     videoSink = new QVideoSink;
     view = new QGraphicsView;
     //view->setRenderHint(QPainter::Antialiasing); //开启抗锯齿
-    //view->setViewport(new QOpenGLWidget()); //开启OpenGL
+    // view->setViewport(new QOpenGLWidget()); //开启OpenGL
     scene = new QGraphicsScene;
     // scene->setSceneRect(QRectF(-960,-540,1920,1080));
-    // 图片图元
-    pixmapItem = new QGraphicsPixmapItem;
-    // pixmapItem->setPos(0,0);
+
+
+    // pixmapItem
+    pixmapItem = new PixItem;
+    // pixmapItem->setPos(1000,500);
     scene->addItem(pixmapItem);
 
 
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     textItem->setFont(QFont("宋体",30));
     textItem->setFlag(QGraphicsItem::ItemIsMovable);
     textItem->setDefaultTextColor(QColor(0,255,0));
-    textItem->setPos(0,0);
+    // textItem->setPos(1000,500);
     scene->addItem(textItem);
 
 
@@ -65,8 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     stackedWidget->setCurrentWidget(stackedWidget);
 
 
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     resize(1920, 1080); // 在窗口显示时设置大小
 
@@ -123,7 +125,7 @@ MainWindow::MainWindow(QWidget *parent)
     // }
 
     // set cameraDevice Format
-    camera->setCameraFormat(formats[7]);
+    camera->setCameraFormat(formats[1]);
 
 
 
@@ -258,5 +260,6 @@ void MainWindow::moveEvent(QMoveEvent *event) {
 
 
 void MainWindow::mouseDoubleClickEvent(QMouseEvent *event) {
-    qDebug()<<event->position().toPoint();
+    qDebug()<<"MainWindow:"<<event->position().toPoint();
+    QMainWindow::mouseDoubleClickEvent(event);
 }

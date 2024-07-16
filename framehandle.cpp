@@ -35,7 +35,7 @@ void FrameHandle::run()
     }
 
     // 模拟耗时操作
-    QThread::msleep(10);
+    // QThread::msleep(10);
 
 
     // 深拷贝
